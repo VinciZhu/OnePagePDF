@@ -31,6 +31,7 @@ onepagepdf [options] <input path> <output path>
 ```
 -V, --version     display current version
 --css <path>      specify custom css file for markdown
+--wait <value>    specify time to wait for page to load (default: 500)
 --width <value>   specify viewport width (default: 1000)
 --height <value>  specify viewport height (default: 500)
 --offset <value>  specify extra height offset (default: 32)
@@ -82,13 +83,13 @@ engine.deinit()
 ### Convert Markdown to PDF
 
 ```JavaScript
-const html = await onepagepdf.markdownToHtml(/* some markdown */)
-await onepagepdf.loadHtml(html)
-await onepagepdf.pageToPdf(/* output path */)
+const html = await engine.markdownToHtml(/* some markdown */)
+await engine.loadHtml(html)
+await engine.pageToPdf(/* output path */)
 ```
 
 ### Convert webpage to PDF
 ```JavaScript
-await onepagepdf.openUrl(/* some url */)
-await onepagepdf.pageToPdf(/* output path */)
+await engine.openUrl(/* some url */)
+await engine.pageToPdf(/* output path */)
 ```

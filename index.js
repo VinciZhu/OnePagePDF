@@ -15,21 +15,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export class onePagePdf {
 
     constructor(options) {
-        if (options.css === undefined) {
-            options.css = readFileSync(__dirname + '/default.css').toString()
-        }
-        this.htmlPrefix = `<!DOCTYPE html>
+        options.css = readFileSync(__dirname + '/default.css').toString() + options.css
+        this.htmlPrefix =
+            `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" ref="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.css" integrity="sha384-Juol1FqnotbkyZUT5Z7gUPjQ9gzlwCENvUZTpQBAPxtusdwFLRy382PSDx5UUJ4/" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/katex.min.js" integrity="sha384-97gW6UIJxnlKemYavrqDHSX3SiygeOwIZhwyOKRfSaf0JWKRVj9hLASHgFTzT+0O" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.3/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body)"></script>` +
-            //             `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css">
-            // <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-            // <script>hljs.highlightAll();</script>` +
-            `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.3/katex.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css">
 <style>
 ${options.css}
 </style>
@@ -38,7 +32,8 @@ ${options.css}
 <body>
 <article class="markdown-body">
 `
-        this.htmlSuffix = `</article>
+        this.htmlSuffix =
+            `</article>
 </body>
 </html>
 `
@@ -101,12 +96,13 @@ ${options.css}
     }
 
     async pageToPdf(path) {
-        await this.page.setViewportSize({ width: this.options.width, height: this.options.height })
-        const height = await this.page.evaluate(() => document.documentElement.scrollHeight)
+        await this.page.setViewportSize({ width: parseFloat(this.options.width), height: parseFloat(this.options.height) })
+        const height = await this.page.evaluate(() => document.documentElement.scrollHeight) + parseFloat(this.options.offset)
         const width = await this.page.evaluate(() => document.documentElement.scrollWidth)
         if (this.options.debug) {
-            console.log(`height: ${height} + ${this.options.offset}, width: ${width}`)
+            console.log(`height: ${height}, width: ${width}`)
         }
-        await this.page.pdf({ path: path, width: `${width} px`, height: `${height + this.options.offset} px`, printBackground: true, pageRanges: '1' })
+        await this.page.waitForTimeout(parseInt(this.options.wait))
+        await this.page.pdf({ path: path, width: `${width} px`, height: `${height} px`, printBackground: true, pageRanges: '1' })
     }
 }

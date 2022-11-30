@@ -44,6 +44,7 @@ program
     .argument('<input path>', 'path to markdown or html, or full url')
     .argument('<output path>', 'path to pdf')
     .option('--css <path>', 'specify custom css file for markdown', undefined)
+    .option('--wait <value>', 'specify time to wait for page to load', 500)
     .option('--width <value>', 'specify viewport width', 1000)
     .option('--height <value>', 'specify viewport height', 500)
     .option('--offset <value>', 'specify extra height offset', 32)
