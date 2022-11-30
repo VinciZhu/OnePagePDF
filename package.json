@@ -1,6 +1,6 @@
 {
   "name": "@hasined/onepagepdf",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Convert Markdown or HTML to one-page-only PDF.",
   "main": "index.js",
   "type": "module",
