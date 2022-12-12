@@ -1,5 +1,5 @@
 import { chromium } from 'playwright'
-import MarkdownIt from 'markdown-it'
+import markdownIt from 'markdown-it'
 import markdownItKatex from '@traptitech/markdown-it-katex'
 import markdownItAnchor from 'markdown-it-anchor'
 import markdownItImplicitFigures from 'markdown-it-implicit-figures'
@@ -9,6 +9,7 @@ import { toHtml } from 'hast-util-to-html'
 import { dirname } from 'path';
 import fileUrl from 'file-url'
 import { fileURLToPath } from 'url'
+import githubSlugger from 'github-slugger'
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -25,7 +26,7 @@ export class onePagePdf {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.3/katex.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css">
 <style>
-${options.css}
+${options.css === undefined ? ' ' : options.css}
 </style>
 <title>onePagePdf</title>
 </head>
@@ -46,7 +47,8 @@ ${options.css}
 
     async init() {
         this.starryNight = await createStarryNight(common)
-        this.markdownIt = new MarkdownIt({
+        this.slugger = new githubSlugger()
+        this.markdownIt = new markdownIt({
             html: true,
             highlight: ((value, lang) => {
                 const scope = this.starryNight.flagToScope(lang)
@@ -69,7 +71,8 @@ ${options.css}
         })
             .use(markdownItKatex)
             .use(markdownItAnchor, {
-                permalink: markdownItAnchor.permalink.headerLink(), slugify: s => String(s).toLowerCase().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9_\u3400-\u9FBF\s-]/g, '')
+                permalink: markdownItAnchor.permalink.headerLink(),
+                slugify: s => this.slugger.slug(s)
             })
             .use(markdownItImplicitFigures, { figcaption: true })
         this.browser = await chromium.launch()

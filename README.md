@@ -1,9 +1,9 @@
-# Onepagepdf
+# onepagepdf
 
 [![npm version](https://img.shields.io/npm/v/@hasined/onepagepdf)](https://www.npmjs.com/package/@hasined/onepagepdf)
 [![npm license](https://img.shields.io/npm/l/@hasined/onepagepdf)](./LICENSE)
 
-Onepagepdf is a command line tool that converts HTML or Markdown to PDF as a single long page, implemented by wrapping [playwright](https://github.com/microsoft/playwright), [markdown-it](https://github.com/markdown-it/markdown-it), etc.
+`onepagepdf` is a command line tool that converts HTML or Markdown to PDF as a single long page, implemented by wrapping [playwright](https://github.com/microsoft/playwright), [markdown-it](https://github.com/markdown-it/markdown-it), etc.
 
 ## Installation
 
@@ -93,3 +93,10 @@ await engine.pageToPdf(/* output path */)
 await engine.openUrl(/* some url */)
 await engine.pageToPdf(/* output path */)
 ```
+
+## TODO
+
+-   [ ] Rewrite in TypeScript.
+-   [ ] Compatibility for Matt Bierner's [GitHub Markdown Preview](https://marketplace.visualstudio.com/items?itemName=bierner.github-markdown-preview) extension pack in VS Code.
+-   [ ] Support bibtex citations in Markdown.
+-   [ ] Support copy and paste of KaTeX.

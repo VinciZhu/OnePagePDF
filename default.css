@@ -1,10 +1,28 @@
+@import url("https://cdn.jsdelivr.net/gh/vsalvino/computer-modern@main/fonts/serif.css");
+@media (prefers-color-scheme:dark) {
+  body {
+    background-color: #0d1117
+  }
+  .markdown-body img {
+    filter: invert() opacity(0.9);
+  }
+}
+@counter-style decimal-parentheses {
+  system: extends decimal;
+  prefix: "(";
+  suffix: ") ";
+}
+@counter-style lower-alpha-parentheses {
+  system: extends lower-alpha;
+  prefix: "(";
+  suffix: ") ";
+}
 .markdown-body {
-  box-sizing: border-box;
-  min-width: 200px;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 45px;
-  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: "Computer Modern Serif", "Times New Roman", Times, Baskerville,
+    Georgia, "Source Han Serif SC", "STSong", serif;
 }
 .markdown-body img {
   display: block;
@@ -17,6 +35,67 @@
   text-align: center;
   margin-top: 10px;
 }
+.markdown-body .katex {
+  letter-spacing: 0;
+  font-size: 1em;
+}
+.markdown-body li {
+  padding-left: 5px;
+}
+.markdown-body li + li {
+  margin-top: 1.5em;
+}
+.markdown-body li p {
+  margin-top: -8px;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: decimal-parentheses;
+}
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha-parentheses;
+}
+.markdown-body table {
+  font-size: 14px;
+  margin: 16px auto;
+  width: max-content;
+  max-width: 80%;
+}
+.markdown-body table tr,
+.markdown-body table tr:nth-child(2n) {
+  background-color: transparent;
+  border: 0;
+}
+.markdown-body table th,
+.markdown-body table td {
+  background-color: transparent;
+  border: 0;
+  padding: 2px 16px;
+}
+.markdown-body table th:first-child,
+.markdown-body table td:first-child {
+  padding-left: 24px;
+}
+.markdown-body table th:last-child,
+.markdown-body table td:last-child {
+  padding-right: 24px;
+}
+.markdown-body table thead tr:first-child {
+  border-top: 2px solid var(--color-fg-default);
+}
+.markdown-body table tbody tr:first-child {
+  border-top: 1.5px solid var(--color-fg-default);
+}
+.markdown-body table tbody tr:last-child {
+  border-bottom: 2px solid var(--color-fg-default);
+}
+
 .markdown-body .header-anchor,
 .markdown-body .header-anchor:link,
 .markdown-body .header-anchor:visited,
@@ -26,15 +105,7 @@
   text-decoration: none;
   color: inherit;
 }
-.markdown-body .katex {
-  font-size: 1em !important;
-}
-@counter-style numeric-parentheses {
-  system: extends numeric;
-  prefix: "(";
-  suffix: ") ";
-}
-.markdown-body ol ol,
-.markdown-body ul ol {
-  list-style: numeric-parentheses;
+.markdown-body {
+  padding: 60px;
+  margin: 0 auto;
 }
