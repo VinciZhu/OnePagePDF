@@ -1,4 +1,6 @@
 node_modules
 test/github.pdf
 test/readme.pdf
+test/helloworld.pdf
 test/readme.html
+test/.opp_tmp

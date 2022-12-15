@@ -1,3 +1,5 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.3/katex.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css");
 @import url("https://cdn.jsdelivr.net/gh/vsalvino/computer-modern@main/fonts/serif.css");
 @media (prefers-color-scheme:dark) {
   body {
@@ -20,9 +22,10 @@
 .markdown-body {
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: 1px;
   font-family: "Computer Modern Serif", "Times New Roman", Times, Baskerville,
     Georgia, "Source Han Serif SC", "STSong", serif;
+  padding: 60px;
+  margin: 0 auto;
 }
 .markdown-body img {
   display: block;
@@ -104,8 +107,4 @@
 .markdown-body .header-anchor:active {
   text-decoration: none;
   color: inherit;
-}
-.markdown-body {
-  padding: 60px;
-  margin: 0 auto;
 }

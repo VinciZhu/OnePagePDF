@@ -1,3 +1,5 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.3/katex.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css");
 .markdown-body {
   box-sizing: border-box;
   min-width: 200px;
@@ -9,4 +11,13 @@
   .markdown-body {
     padding: 15px;
   }
+}
+.markdown-body .header-anchor,
+.markdown-body .header-anchor:link,
+.markdown-body .header-anchor:visited,
+.markdown-body .header-anchor:hover,
+.markdown-body .header-anchor:focus,
+.markdown-body .header-anchor:active {
+  text-decoration: none;
+  color: inherit;
 }

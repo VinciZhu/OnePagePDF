@@ -16,30 +16,26 @@ npm i -g @hasined/onepagepdf
 > :warning: This project is in the early stage of development. The API may change in the future.
 
 ```
-onepagepdf [options] <input path> <output path>
-```
+Usage: onepagepdf [options] <input path> <output path>
 
-### Arguments
+Convert Markdown or HTML to one-page-only PDF.
 
-```
-<input path>      path to markdown or html, or full url
-<output path>     path to pdf
-```
+Arguments:
+  input path               path to markdown or html, or full url
+  output path              path to pdf
 
-### Options
-
+Options:
+  -V, --version            display current version
+  -D, --debug              print debug messages
+  --temp <dir>             directory to save temporary files (default: "./.opp_tmp")
+  --width <float>          viewport width (default: 1000)
+  --height <float>         viewport height (default: 500)
+  --offset <float>         extra height offset (default: 32)
+  --delay <int>            time to wait before taking screenshot (default: 500)
+  --color-scheme <string>  emulate color scheme (default: "no-preference")
+  --css <path>             custom css file for markdown
+  -h, --help               display help for command
 ```
--V, --version     display current version
---css <path>      specify custom css file for markdown
---wait <value>    specify time to wait for page to load (default: 500)
---width <value>   specify viewport width (default: 1000)
---height <value>  specify viewport height (default: 500)
---offset <value>  specify extra height offset (default: 32)
---temp <path>     write temporary html to <path>
--d, --debug       print debug messages
--h, --help        display help for command
-```
-
 ### Notes
 
 -   The height of generated PDF is measured by `documentElement.scrollHeight`, which fits all the content in the viewport excluding borders and margins. You might want to use the option `--offset` to add extra margin to the bottom of the PDF.
@@ -55,14 +51,9 @@ onepagepdf [options] <input path> <output path>
 ```bash
 # Convert webpage to PDF
 $ onepagepdf https://github.com/HasiNed/onepagepdf onepage.pdf
-opening https://github.com/HasiNed/onepagepdf
-pdf saved to onepage.pdf
 
-# Convert Markdown to PDF, with custom CSS
-$ onepagepdf README.md ./test/readme.pdf --temp ./test/readme.html --css ./test/github.css
-opening README.md
-temp saved to ./test/readme.html
-pdf saved to ./test/readme.pdf
+# Convert Markdown to PDF, with custom CSS and temp directory
+$ onepagepdf README.md ./test/readme.pdf --temp ./test --css ./test/github.css
 ```
 
 ### API
@@ -72,26 +63,26 @@ pdf saved to ./test/readme.pdf
 ```JavaScript
 import { onePagePdf } from '@hasined/onepagepdf'
 
-const engine = new onePagePdf(options)
+const engine = new onePagePDF(options)
 await engine.init()
 
 /* some code here */
 
-engine.deinit()
+engine.deinit() // close chromium
 ```
 
 ### Convert Markdown to PDF
 
 ```JavaScript
-const html = await engine.markdownToHtml(/* some markdown */)
-await engine.loadHtml(html)
-await engine.pageToPdf(/* output path */)
+const html = await engine.markdownToHTML(/* some markdown */)
+await engine.loadHTML(html)
+await engine.pageToPDF(/* output path */)
 ```
 
 ### Convert webpage to PDF
 ```JavaScript
-await engine.openUrl(/* some url */)
-await engine.pageToPdf(/* output path */)
+await engine.openURL(/* some url */)
+await engine.pageToPDF(/* output path */)
 ```
 
 ## TODO
