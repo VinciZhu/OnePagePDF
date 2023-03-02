@@ -3,7 +3,7 @@ import { chromium } from "playwright"
 import markdownIt from "markdown-it"
 import markdownItKatex from "@traptitech/markdown-it-katex"
 import markdownItAnchor from "markdown-it-anchor"
-import markdownItImplicitFigures from "markdown-it-implicit-figures"
+// import markdownItImplicitFigures from "markdown-it-implicit-figures"
 
 import githubSlugger from "github-slugger"
 
@@ -76,7 +76,7 @@ ${options.css}
         permalink: markdownItAnchor.permalink.headerLink(),
         slugify: (s) => this.slugger.slug(s),
       })
-      .use(markdownItImplicitFigures, { figcaption: true })
+      // .use(markdownItImplicitFigures, { figcaption: true })
     this.browser = await chromium.launch()
     this.page = await this.browser.newPage()
     await this.page.setViewportSize({
