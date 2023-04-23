@@ -3,6 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/@hasined/onepagepdf)](https://www.npmjs.com/package/@hasined/onepagepdf)
 [![npm license](https://img.shields.io/npm/l/@hasined/onepagepdf)](./LICENSE)
 
+> :warning: This project has been deprecated due to heavy dependencies and too messy code. Of course you can still use the package, but I plan to rewrite it as a vscode plugin with minimal functionality in the future.
+
 `onepagepdf` is a command line tool that converts HTML or Markdown to PDF as a single long page, implemented by wrapping [playwright](https://github.com/microsoft/playwright), [markdown-it](https://github.com/markdown-it/markdown-it), etc.
 
 ## Installation
@@ -12,8 +14,6 @@ npm i -g @hasined/onepagepdf
 ```
 
 ## Usage
-
-> :warning: This project is in the early stage of development. The API may change in the future.
 
 ```
 Usage: onepagepdf [options] <input path> <output path>
@@ -27,22 +27,23 @@ Arguments:
 Options:
   -V, --version            display current version
   -D, --debug              print debug messages
-  --temp <dir>             directory to save temporary files (default: "./.opp_tmp")
-  --width <float>          viewport width (default: 1000)
+  --temp <dir>             directory to save temporary files (default:
+                           "./.opp_tmp")
+  --width <float>          viewport width (default: 816)
   --height <float>         viewport height (default: 500)
-  --offset <float>         extra height offset (default: 32)
-  --delay <int>            time to wait before taking screenshot (default: 500)
+  --offset <float>         additional height added to the bottom (default: 32)
   --color-scheme <string>  emulate color scheme (default: "no-preference")
   --css <path>             custom css file for markdown
   -h, --help               display help for command
 ```
+
 ### Notes
 
--   The height of generated PDF is measured by `documentElement.scrollHeight`, which fits all the content in the viewport excluding borders and margins. You might want to use the option `--offset` to add extra margin to the bottom of the PDF.
+- The height of generated PDF is measured by `documentElement.scrollHeight`, which fits all the content in the viewport excluding borders and margins. You might want to use the option `--offset` to add additional margin to the bottom of the PDF.
 
--   The style of Markdown is based on [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) with some modifications. See [`default.css`](./default.css) for details. You might want to use the option `--css` to specify your own CSS file to override some default settings.
+- The style of Markdown is based on [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) with some modifications. See [`default.css`](./default.css) for details. You might want to use the option `--css` to specify your own CSS file to override some default settings.
 
--   Currently, the Markdown-to-HTML conversion supports math rendering with [KaTeX](https://katex.org/) and code highlighting with [starry-night](https://github.com/wooorm/starry-night). Many other syntaxes may not be supported yet. For more complicated use, we recommend you to first convert Markdown to HTML with other backends, such as [pandoc](https://github.com/jgm/pandoc) and [hugo](https://github.com/gohugoio/hugo), and then convert it to one-page-only PDF.
+- Currently, the Markdown-to-HTML conversion supports math rendering with [KaTeX](https://katex.org/) and code highlighting with [starry-night](https://github.com/wooorm/starry-night). Many other syntaxes may not be supported yet. For more complicated use, we recommend you to first convert Markdown to HTML with other backends, such as [pandoc](https://github.com/jgm/pandoc) and [hugo](https://github.com/gohugoio/hugo), and then convert it to one-page-only PDF.
 
 ## Examples
 
@@ -80,14 +81,8 @@ await engine.pageToPDF(/* output path */)
 ```
 
 ### Convert webpage to PDF
+
 ```JavaScript
 await engine.openURL(/* some url */)
 await engine.pageToPDF(/* output path */)
 ```
-
-## TODO
-
--   [ ] Rewrite in TypeScript.
--   [ ] Compatibility for Matt Bierner's [GitHub Markdown Preview](https://marketplace.visualstudio.com/items?itemName=bierner.github-markdown-preview) extension pack in VS Code.
--   [ ] Support bibtex citations in Markdown.
--   [ ] Support copy and paste of KaTeX.

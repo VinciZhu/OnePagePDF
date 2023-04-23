@@ -1,18 +1,17 @@
-import { chromium } from "playwright"
+import { chromium } from 'playwright'
 
-import markdownIt from "markdown-it"
-import markdownItKatex from "@traptitech/markdown-it-katex"
-import markdownItAnchor from "markdown-it-anchor"
-// import markdownItImplicitFigures from "markdown-it-implicit-figures"
+import markdownIt from 'markdown-it'
+import markdownItKatex from '@traptitech/markdown-it-katex'
+import markdownItAnchor from 'markdown-it-anchor'
 
-import githubSlugger from "github-slugger"
+import githubSlugger from 'github-slugger'
 
-import { createStarryNight, common } from "@wooorm/starry-night"
-import { toHtml } from "hast-util-to-html"
+import { createStarryNight, common } from '@wooorm/starry-night'
+import { toHtml } from 'hast-util-to-html'
 
-import { dirname } from "path"
-import { pathToFileURL, fileURLToPath } from "url"
-import { readFileSync, writeFileSync } from "fs"
+import { dirname } from 'path'
+import { pathToFileURL, fileURLToPath } from 'url'
+import { readFileSync, writeFileSync } from 'fs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -20,9 +19,9 @@ export class onePagePDF {
   constructor(options) {
     if (options.css === undefined) {
       options.css =
-        readFileSync(__dirname + "/style/default.css").toString() + options.css
+        readFileSync(__dirname + '/style/default.css').toString() + options.css
     }
-    this.htmlPrefix = `<!DOCTYPE html>
+    this.prologue = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -35,7 +34,7 @@ ${options.css}
 <body>
 <article class="markdown-body">
 `
-    this.htmlSuffix = `</article>
+    this.epilogue = `</article>
 </body>
 </html>
 `
@@ -54,20 +53,20 @@ ${options.css}
       highlight: ((value, lang) => {
         const scope = this.starryNight.flagToScope(lang)
         return toHtml({
-          type: "element",
-          tagName: "pre",
+          type: 'element',
+          tagName: 'pre',
           properties: {
             className: scope
               ? [
-                  "highlight",
-                  "highlight-" +
-                    scope.replace(/^source\./, "").replace(/\./g, "-"),
+                  'highlight',
+                  'highlight-' +
+                    scope.replace(/^source\./, '').replace(/\./g, '-'),
                 ]
               : undefined,
           },
           children: scope
             ? this.starryNight.highlight(value, scope).children
-            : [{ type: "text", value }],
+            : [{ type: 'text', value }],
         })
       }).bind(this),
     })
@@ -76,7 +75,6 @@ ${options.css}
         permalink: markdownItAnchor.permalink.headerLink(),
         slugify: (s) => this.slugger.slug(s),
       })
-      // .use(markdownItImplicitFigures, { figcaption: true })
     this.browser = await chromium.launch()
     this.page = await this.browser.newPage()
     await this.page.setViewportSize({
@@ -85,25 +83,23 @@ ${options.css}
     })
     await this.page.emulateMedia({
       colorScheme: this.options.colorScheme,
-      media: "print",
+      media: 'print',
     })
   }
 
   async markdownToHTML(md) {
-    return this.htmlPrefix + this.markdownIt.render(md) + this.htmlSuffix
+    return this.prologue + this.markdownIt.render(md) + this.epilogue
   }
 
   async loadHTML(html) {
-    let path = this.options.temp + ".html"
-    if (this.options.debug)
-      console.log(`temporary html saved to ${path}`)
+    let path = this.options.temp + '.html'
+    if (this.options.debug) console.log(`temporary html saved to ${path}`)
     writeFileSync(path, html)
     await this.openURL(pathToFileURL(path).toString())
   }
 
   async openURL(url) {
-    if (this.options.debug)
-      console.log(`goto ${url}`)
+    if (this.options.debug) console.log(`goto ${url}`)
     await this.page.goto(url)
   }
 
@@ -114,17 +110,15 @@ ${options.css}
     const width = await this.page.evaluate(
       () => document.documentElement.scrollWidth
     )
-    if (this.options.debug)
-      console.log(`pdf size ${height} * ${width}`)
-    await this.page.waitForTimeout(this.options.delay)
+    if (this.options.debug) console.log(`pdf size ${height} * ${width}`)
+    await this.page.waitForLoadState()
     await this.page.pdf({
       path: path,
       width: `${width} px`,
       height: `${height} px`,
       printBackground: true,
-      pageRanges: "1",
+      pageRanges: '1',
     })
-    if (this.options.debug)
-      console.log(`output pdf saved to ${path}`)
+    if (this.options.debug) console.log(`output pdf saved to ${path}`)
   }
 }
