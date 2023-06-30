@@ -104,6 +104,8 @@ ${options.css}
   }
 
   async pageToPDF(path) {
+    await this.page.waitForLoadState()
+    await this.page.waitForTimeout(this.options.delay)
     const height =
       (await this.page.evaluate(() => document.documentElement.scrollHeight)) +
       this.options.offset
@@ -111,7 +113,6 @@ ${options.css}
       () => document.documentElement.scrollWidth
     )
     if (this.options.debug) console.log(`pdf size ${height} * ${width}`)
-    await this.page.waitForLoadState()
     await this.page.pdf({
       path: path,
       width: `${width} px`,

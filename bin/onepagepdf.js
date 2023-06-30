@@ -67,6 +67,11 @@ program
       .argParser(parseFloat)
   )
   .addOption(
+    new Option('--delay <int>', 'delay in ms before taking screenshot')
+      .default(1000)
+      .argParser((x) => parseInt(x))
+  )
+  .addOption(
     new Option('--color-scheme <string>', 'emulate color scheme').default(
       'no-preference'
     )
